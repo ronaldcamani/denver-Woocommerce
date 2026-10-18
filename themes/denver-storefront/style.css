@@ -1,183 +1,229 @@
 /*
 Theme Name: DENVER Storefront
 Template: storefront
-Description: Tema hijo de Storefront para DENVER LIBRERIA.
-Version: 0.2.0
+Description: Tema hijo de Storefront para DENVER LIBRERIA. Diseño simple y limpio.
+Version: 0.4.0
 Text Domain: denver-storefront
 */
 
+/* ---------- Tipografía (Barlow, alojada en el tema) ---------- */
+@font-face { font-family: "Barlow Condensed"; font-weight: 700; font-display: swap; src: url("assets/fonts/barlow-condensed-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-weight: 800; font-display: swap; src: url("assets/fonts/barlow-condensed-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 400; font-display: swap; src: url("assets/fonts/barlow-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 600; font-display: swap; src: url("assets/fonts/barlow-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 700; font-display: swap; src: url("assets/fonts/barlow-latin-700-normal.woff2") format("woff2"); }
+
 :root {
-	--denver-marino: #0A1B5C;
-	--denver-electrico: #1F6BFF;
-	--denver-amarillo: #FFE11F;
-	--denver-fondo: #F4F6FC;
+	--marino: #0A1B5C;
+	--electrico: #1F6BFF;
+	--amarillo: #FFE11F;
+	--papel: #F4F6FC;
+	--papel-2: #E3EAFB;
+	--celeste: #BFD3FF;
+	--tinta: #0A1B5C;
+	--tinta-suave: #3A4780;
+	--display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+	--texto: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--paso-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+	--paso-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
 	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--margen: clamp(1rem, 3vw, 2rem);
 }
 
-/* ---- Base móvil ---- */
-html {
-	-webkit-tap-highlight-color: transparent;
-	-webkit-text-size-adjust: 100%;
-}
-body { overflow-x: clip; }
-input, textarea, select { font-size: 16px; }
+/* ---------- Base y móvil ---------- */
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { overflow-x: clip; font-family: var(--texto); font-size: var(--paso-cuerpo); line-height: 1.5; color: var(--tinta); background: #fff; }
+input, textarea, select { font-family: var(--texto); font-size: 16px; }
 button, a, [role="button"], .button { touch-action: manipulation; }
-button, [role="button"], .button, .menu-toggle {
-	-webkit-user-select: none;
-	user-select: none;
-	-webkit-touch-callout: none;
+button, [role="button"], .button, .menu-toggle { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+:focus-visible { outline: 3px solid var(--electrico); outline-offset: 2px; }
+.banner :focus-visible, .site-footer :focus-visible { outline-color: var(--amarillo); }
+
+h1, h2, h3, h4, h5, h6, .entry-title { font-family: var(--display); font-weight: 800; color: var(--tinta); letter-spacing: -0.01em; line-height: 1; }
+h1, h2, .entry-title, .page-title { text-transform: uppercase; }
+a { color: var(--electrico); }
+a:hover { color: var(--marino); }
+.screen-reader-text:focus { background: var(--amarillo); color: var(--marino); }
+
+/* ---------- Cabecera ---------- */
+.site-header { background: #fff; color: var(--tinta); padding: 0; border: 0; margin-bottom: 0; }
+body.home.page:not(.page-template-template-homepage) .site-header, .home.blog .site-header, .home.post-type-archive-product .site-header, .no-wc-breadcrumb .site-header, .site-header { margin-bottom: 0; }
+.site-header a { color: var(--tinta); }
+.cabecera {
+	max-width: 1240px; margin: 0 auto; padding: 1rem var(--margen); box-sizing: border-box;
+	display: grid; grid-template-columns: auto auto 1fr auto auto; gap: 0.75rem 1.5rem; align-items: center;
 }
-.site-header, .site-footer { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
-.site-footer { padding-bottom: env(safe-area-inset-bottom); }
+.logo { display: flex; flex-direction: column; text-decoration: none; line-height: 0.9; }
+.logo__nombre { font-family: var(--display); font-weight: 800; font-size: 2.4rem; letter-spacing: 0.01em; text-transform: uppercase; color: var(--marino); }
+.logo__sub { font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--electrico); padding-top: 0.15rem; }
+.categorias { position: relative; }
+.categorias__boton { display: flex; align-items: center; gap: 0.5rem; background: var(--marino); color: #fff; padding: 0.8rem 1.1rem; font-size: 1.0625rem; }
+.categorias__lista { position: absolute; z-index: 50; top: calc(100% + 0.5rem); left: 0; min-width: 16rem; margin: 0; padding: 0.5rem 0; list-style: none; background: #fff; box-shadow: 0 8px 24px rgba(10, 27, 92, 0.18); }
+.categorias__lista[hidden] { display: none; }
+.categorias__lista a { display: flex; justify-content: space-between; gap: 1.5rem; padding: 0.7rem 1.25rem; color: var(--tinta); text-decoration: none; font-weight: 600; }
+.categorias__lista small { color: var(--tinta-suave); font-weight: 400; }
+.categorias__lista a:hover, .categorias__lista a:focus-visible { background: var(--papel-2); }
+.buscador { display: flex; min-width: 0; }
+.buscador input[type="search"] { flex: 1; min-width: 0; height: 3rem; box-sizing: border-box; padding: 0 1rem; border: 2px solid var(--marino); border-right: 0; border-radius: 0; background: #fff; color: var(--tinta); }
+.buscador input[type="search"]::placeholder { color: var(--tinta-suave); opacity: 1; }
+.buscador button { width: 3.25rem; height: 3rem; padding: 0; display: flex; align-items: center; justify-content: center; background: var(--electrico); color: #fff; }
+.denver-cuenta, .denver-carrito { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.1rem; min-width: 4.5rem; color: var(--tinta); text-decoration: none; font-size: 0.9375rem; line-height: 1.1; }
+.denver-carrito .cuenta { position: absolute; top: -0.35rem; right: 0.6rem; min-width: 1.25rem; padding: 0 0.25rem; box-sizing: border-box; text-align: center; background: var(--amarillo); color: var(--marino); font-size: 0.8125rem; font-weight: 700; line-height: 1.25rem; }
+.barra { background: var(--papel); }
+.barra ul { max-width: 1240px; margin: 0 auto; padding: 0 var(--margen); box-sizing: border-box; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem 2.5rem; }
+.barra a { display: block; padding: 0.9rem 0; color: var(--tinta); font-weight: 600; font-size: 1rem; letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; }
+.barra a:hover { color: var(--electrico); }
+.storefront-breadcrumb { padding: 1.25rem 0 0; margin: 0; }
+.storefront-breadcrumb a, .woocommerce-breadcrumb a { color: var(--tinta-suave); }
+@media (max-width: 767px) {
+	.cabecera { grid-template-columns: 1fr auto auto; grid-template-areas: "logo cats carrito" "buscar buscar buscar"; padding-top: 0.75rem; padding-bottom: 0.75rem; gap: 0.75rem; }
+	.logo { grid-area: logo; }
+	.categorias { grid-area: cats; }
+	.categorias__boton span { display: none; }
+	.categorias__boton { padding: 0.7rem; }
+	.categorias__lista { left: auto; right: 0; }
+	.buscador { grid-area: buscar; }
+	.denver-cuenta { display: none; }
+	.denver-carrito { grid-area: carrito; min-width: 3rem; }
+	.denver-carrito .etiqueta { display: none; }
+	.denver-carrito .cuenta { right: 0; }
+	.barra { display: none; }
+	.logo__nombre { font-size: 2rem; }
+}
 
-/* ---- Cabecera ---- */
-.site-header { background-color: var(--denver-marino); border-bottom: 4px solid var(--denver-amarillo); }
-.site-header a:not(.button), .site-header .site-description,
-.site-header .site-title a, .main-navigation ul.menu > li > a,
-.site-header-cart .cart-contents { color: #fff; }
-.site-title { font-weight: 800; letter-spacing: 0.04em; }
-.site-description { opacity: 0.8; }
-.menu-toggle { color: #fff; border-color: rgba(255, 255, 255, 0.45); }
-.menu-toggle::before, .menu-toggle::after, .menu-toggle span::before { color: #fff; }
-
-/* ---- Botones: respuesta inmediata al tocar ---- */
-a { color: var(--denver-electrico); }
-button, .button, input[type="submit"], .added_to_cart,
+/* ---------- Botones: planos, de una sola forma ---------- */
+button, .button, input[type="submit"], .added_to_cart, .boton,
 .woocommerce #respond input#submit.alt, .woocommerce a.button.alt,
-.woocommerce button.button.alt, .woocommerce input.button.alt {
-	background-color: var(--denver-electrico);
-	color: #fff;
-	border-radius: 10px;
-	transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out);
-}
-button:active, .button:active, input[type="submit"]:active { transform: scale(0.97); }
-@media (hover: hover) and (pointer: fine) {
-	button:hover, .button:hover, input[type="submit"]:hover,
-	.woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover {
-		background-color: var(--denver-marino);
-		color: #fff;
-	}
-}
-.woocommerce span.onsale { background-color: var(--denver-amarillo); color: var(--denver-marino); font-weight: 700; }
-
-/* ---- Productos ---- */
-ul.products li.product {
-	background: #fff;
-	border: 1px solid #E3E8F5;
-	border-radius: 14px;
-	padding: 10px 10px 14px;
-	box-sizing: border-box;
-}
-ul.products li.product img { border-radius: 10px; }
-ul.products li.product .woocommerce-loop-product__title { font-size: 0.95rem; font-weight: 600; color: var(--denver-marino); }
-.price, .price ins { color: var(--denver-marino); font-weight: 800; }
-
-/* ---- Portada ---- */
-.denver-home { width: 100%; float: none; margin: 0; }
-.denver-banner {
-	margin-left: calc(50% - 50vw);
-	margin-right: calc(50% - 50vw);
-	padding: 3rem 1.25rem;
-	background:
-		radial-gradient(circle at 85% 20%, rgba(255, 225, 31, 0.35) 0, transparent 38%),
-		radial-gradient(circle at 10% 90%, rgba(31, 107, 255, 0.55) 0, transparent 45%),
-		var(--denver-marino);
-	color: #fff;
-}
-.denver-banner__texto { max-width: 640px; margin: 0 auto; }
-.denver-banner__etiqueta {
-	display: inline-block;
-	margin: 0 0 0.75rem;
-	padding: 0.2rem 0.75rem;
-	border-radius: 999px;
-	background: var(--denver-amarillo);
-	color: var(--denver-marino);
-	font-weight: 800;
-	font-size: 0.85rem;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-}
-.denver-banner h1 { color: #fff; font-size: clamp(1.7rem, 6vw, 2.8rem); line-height: 1.15; margin: 0 0 0.75rem; }
-.denver-banner p { color: rgba(255, 255, 255, 0.92); }
-.denver-cta {
-	display: inline-block;
-	margin-top: 0.75rem;
-	padding: 0.9rem 1.6rem;
-	border-radius: 12px;
-	background: var(--denver-amarillo);
-	color: var(--denver-marino) !important;
-	font-weight: 800;
-	text-decoration: none;
-	transition: transform 140ms var(--ease-out);
-}
-.denver-cta:active { transform: scale(0.97); }
-
-.denver-seccion { margin: 2.5rem 0; }
-.denver-seccion h2 { color: var(--denver-marino); font-size: 1.4rem; margin-bottom: 1rem; }
-
-.denver-categorias, .denver-servicios ul, .denver-confianza ul {
-	list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem;
-}
-.denver-categorias { grid-template-columns: repeat(2, 1fr); }
-.denver-categorias a {
-	display: flex; flex-direction: column; justify-content: center; min-height: 92px;
-	padding: 1rem; border-radius: 14px; text-decoration: none;
-	background: var(--denver-electrico); color: #fff;
-	transition: transform 140ms var(--ease-out);
-}
-.denver-categorias li:nth-child(3n+2) a { background: var(--denver-marino); }
-.denver-categorias li:nth-child(3n) a { background: var(--denver-amarillo); color: var(--denver-marino); }
-.denver-categorias a:active { transform: scale(0.97); }
-.denver-categorias span { font-weight: 800; font-size: 1.1rem; }
-.denver-categorias small { opacity: 0.85; }
-
-.denver-servicios ul { grid-template-columns: 1fr; }
-.denver-servicios li, .denver-confianza li {
-	display: flex; flex-direction: column; padding: 1rem 1.1rem; border-radius: 14px;
-}
-.denver-servicios li { background: var(--denver-fondo); border-left: 5px solid var(--denver-electrico); }
-.denver-servicios strong, .denver-confianza strong { color: var(--denver-marino); }
-
-.denver-confianza {
-	margin: 2.5rem calc(50% - 50vw) 0;
-	padding: 1.5rem 1.25rem;
-	background: var(--denver-fondo);
-}
-.denver-confianza ul { max-width: 1100px; margin: 0 auto; grid-template-columns: 1fr; }
-.denver-confianza li { background: #fff; border: 1px solid #E3E8F5; }
-
-@media (min-width: 768px) {
-	.denver-banner { padding: 5rem 2rem; }
-	.denver-categorias { grid-template-columns: repeat(4, 1fr); }
-	.denver-servicios ul, .denver-confianza ul { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-	button, .button, .denver-cta, .denver-categorias a { transition: none; }
-}
-
-/* ---- Pie ---- */
-.site-footer { background: var(--denver-marino); color: rgba(255, 255, 255, 0.85); }
-.site-footer a:not(.button), .site-footer h1, .site-footer h2, .site-footer h3 { color: #fff; }
-
-/* ---- Checkout de bloques ---- */
+.woocommerce button.button.alt, .woocommerce input.button.alt,
 .wc-block-components-button:not(.is-link) {
-	background-color: var(--denver-electrico);
+	display: inline-block;
+	background: var(--electrico);
 	color: #fff;
-	border-radius: 10px;
+	border: 0;
+	border-radius: 0;
+	padding: 0.85rem 1.5rem;
+	font-family: var(--texto);
 	font-weight: 700;
-	transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out);
+	font-size: 1.0625rem;
+	line-height: 1.2;
+	text-decoration: none;
+	transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out), color 140ms var(--ease-out);
 }
-.wc-block-components-button:not(.is-link):active { transform: scale(0.98); }
+button:active, .button:active, input[type="submit"]:active, .boton:active, .wc-block-components-button:not(.is-link):active { transform: scale(0.97); }
 @media (hover: hover) and (pointer: fine) {
-	.wc-block-components-button:not(.is-link):hover { background-color: var(--denver-marino); color: #fff; }
+	button:hover, .button:hover, input[type="submit"]:hover, .boton:hover,
+	.woocommerce a.button.alt:hover, .woocommerce button.button.alt:hover,
+	.wc-block-components-button:not(.is-link):hover { background: var(--marino); color: #fff; }
+}
+.boton--oscuro { background: var(--marino); }
+@media (hover: hover) and (pointer: fine) { .boton--oscuro:hover { background: var(--electrico); } }
+
+/* ---------- Tienda: productos en cuadrícula ---------- */
+ul.products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 0 0 2rem; padding: 0; }
+ul.products::before, ul.products::after { display: none; }
+ul.products li.product, .woocommerce ul.products li.product, .woocommerce[class*="columns-"] ul.products li.product { float: none !important; width: auto !important; margin: 0 !important; padding: 0 0 1rem; background: var(--papel); border: 0; border-radius: 0; display: flex; flex-direction: column; }
+ul.products li.product img { margin: 0 0 0.75rem; width: 100%; border-radius: 0; }
+ul.products li.product .woocommerce-loop-product__title { text-transform: none; text-align: left; letter-spacing: 0; font-family: var(--texto); font-weight: 600; font-size: 1.0625rem; line-height: 1.25; color: var(--tinta); padding: 0 0.9rem; }
+ul.products li.product .price { text-align: left; display: block; padding: 0 0.9rem; margin: 0.25rem 0 0.75rem; font-family: var(--display); font-weight: 800; font-size: 1.75rem; color: var(--tinta); }
+ul.products li.product .price del { color: var(--tinta-suave); font-size: 1.1rem; }
+ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
+.woocommerce span.onsale { background: var(--amarillo); color: var(--marino); border-radius: 0; font-weight: 700; min-height: 0; min-width: 0; padding: 0.3rem 0.7rem; line-height: 1.2; }
+.price, .price ins { color: var(--tinta); font-weight: 800; background: transparent; }
+.woocommerce-message, .woocommerce-info, .woocommerce-error { border-top-color: var(--electrico); background: var(--papel); color: var(--tinta); }
+.woocommerce-message::before, .woocommerce-info::before { color: var(--electrico); }
+.woocommerce-error { border-top-color: #B3261E; }
+.star-rating span::before { color: var(--electrico); }
+.woocommerce-pagination .page-numbers li .page-numbers { background: var(--papel); color: var(--tinta); }
+.woocommerce-pagination .page-numbers li .page-numbers.current { background: var(--marino); color: #fff; }
+@media (min-width: 768px) { ul.products { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+@media (min-width: 1100px) { ul.products { grid-template-columns: repeat(4, 1fr); } }
+
+/* ---------- Pie ---------- */
+.site-footer { background: var(--marino); color: #D6E0FF; padding: 0 0 env(safe-area-inset-bottom); margin-top: 0; }
+.site-footer a { color: #fff; }
+.pie { max-width: 1240px; margin: 0 auto; padding: 3rem var(--margen) 2rem; box-sizing: border-box; display: grid; gap: 2rem; }
+.pie p { margin: 0 0 0.5rem; }
+.pie ul { list-style: none; margin: 0; padding: 0; }
+.pie li { margin-bottom: 0.4rem; }
+.pie__marca { font-family: var(--display); font-weight: 800; font-size: 1.75rem; text-transform: uppercase; color: #fff; }
+.pie__titulo { font-weight: 700; color: #fff; }
+.pie__wa { font-weight: 700; color: var(--amarillo) !important; }
+.pie__legal { color: #BFCBF2; font-size: 1rem; }
+@media (min-width: 768px) { .pie { grid-template-columns: 2fr 1fr 1.5fr; } .pie__legal { grid-column: 1 / -1; } }
+
+/* ---------- Portada ---------- */
+.home .site-content > .col-full { max-width: none; padding: 0; margin: 0; }
+.denver-home { width: 100%; float: none; margin: 0; }
+.denver-home .site-main { margin: 0; }
+
+.banner {
+	background: var(--marino); color: #fff; padding: clamp(2.5rem, 6vw, 5rem) var(--margen);
+	display: grid; gap: 2rem; align-items: center;
+}
+.banner > * { max-width: 1240px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+.banner h1 { margin: 0; color: #fff; font-size: clamp(3.2rem, 9vw, 7rem); line-height: 0.9; }
+.banner p { margin: 1rem 0 1.75rem; max-width: 36ch; font-size: var(--paso-lead); color: #E3EAFB; line-height: 1.35; }
+.boton--amarillo { background: var(--amarillo); color: var(--marino); font-size: 1.125rem; padding: 1rem 1.75rem; }
+@media (hover: hover) and (pointer: fine) { .boton--amarillo:hover { background: #fff; color: var(--marino); } }
+.banner__cats { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.banner__cats a { display: flex; flex-direction: column; justify-content: flex-end; min-height: 7rem; padding: 1rem; text-decoration: none; background: var(--electrico); color: #fff; transition: transform 160ms var(--ease-out); }
+.banner__cats li:nth-child(2) a { background: var(--amarillo); color: var(--marino); }
+.banner__cats li:nth-child(3) a { background: #fff; color: var(--marino); }
+.banner__cats li:nth-child(4) a { background: var(--celeste); color: var(--marino); }
+.banner__cats strong { font-family: var(--display); font-size: 1.9rem; line-height: 1; text-transform: uppercase; }
+.banner__cats span { font-size: 1rem; }
+.banner__cats a:active { transform: scale(0.98); }
+@media (min-width: 900px) {
+	.banner { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+	.banner > * { max-width: none; margin: 0; }
+	.banner__texto { justify-self: end; max-width: 620px; }
+	.banner__cats { justify-self: start; max-width: 520px; }
+	.banner__cats a { min-height: 9rem; }
 }
 
-/* ---- Ajustes de portada ---- */
-body.home.page:not(.page-template-template-homepage) .site-header { margin-bottom: 0; }
-.home .site-content { padding-top: 0; }
-.home .site-content > .col-full { max-width: none; padding: 0; margin: 0; }
-.denver-home .denver-seccion, .denver-home .denver-confianza ul { max-width: 1100px; margin-left: auto; margin-right: auto; padding-left: 1.25rem; padding-right: 1.25rem; box-sizing: border-box; }
-.denver-banner { margin-left: 0; margin-right: 0; }
-.denver-confianza { margin-left: 0; margin-right: 0; }
-.denver-banner h1 { font-weight: 800; }
+.vitrina { max-width: 1240px; margin: 0 auto; padding: clamp(3rem, 7vw, 6rem) var(--margen) clamp(2rem, 4vw, 4rem); box-sizing: border-box; }
+.vitrina h2, .servicios h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0 0 1.5rem; }
+.vitrina__mas { text-align: center; margin: 0; }
+
+.servicios { background: var(--papel); padding: clamp(3rem, 7vw, 6rem) var(--margen); }
+.servicios__caja { max-width: 1240px; margin: 0 auto; display: grid; gap: 2rem; }
+.servicios__lista ul { list-style: none; margin: 0; padding: 0; }
+.servicios__lista a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 0.75rem; margin: 0 -0.75rem; color: var(--tinta); text-decoration: none; transition: background-color 160ms var(--ease-out); }
+.servicios__lista strong { display: block; font-size: 1.25rem; }
+.servicios__lista small { display: block; font-size: 1rem; color: var(--tinta-suave); }
+.servicios__precio { font-family: var(--display); font-weight: 800; font-size: 1.5rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.servicios__nota { margin: 1rem 0 0; color: var(--tinta-suave); font-size: 1rem; }
+@media (hover: hover) and (pointer: fine) { .servicios__lista a:hover { background: var(--papel-2); } }
+.servicios__lado img { display: block; width: 100%; height: auto; background: #fff; }
+.calculadora { background: var(--amarillo); color: var(--marino); padding: 1.5rem; }
+.calculadora h3 { margin: 0 0 0.75rem; font-size: 1.6rem; }
+.calculadora label { display: block; font-weight: 700; margin-bottom: 0.25rem; }
+.calculadora input { width: 100%; box-sizing: border-box; padding: 0.5rem 0.8rem; background: #fff; color: var(--marino); border: 0; border-radius: 0; font-family: var(--display); font-weight: 800; font-size: 2rem; }
+.calculadora__total { margin: 0.75rem 0 0; font-size: 1.125rem; }
+.calculadora__total strong { display: block; font-family: var(--display); font-weight: 800; font-size: 2.75rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.calculadora__nota { margin: 0.5rem 0 0; font-size: 1rem; }
+@media (min-width: 900px) { .servicios__caja { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; } }
+
+.confianza { max-width: 1240px; margin: 0 auto; padding: clamp(3rem, 6vw, 5rem) var(--margen); box-sizing: border-box; }
+.confianza ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.75rem; }
+.confianza strong { display: block; font-family: var(--display); font-weight: 800; font-size: 1.75rem; text-transform: uppercase; line-height: 1.05; margin-bottom: 0.25rem; }
+@media (min-width: 768px) { .confianza ul { grid-template-columns: repeat(3, 1fr); gap: 3rem; } }
+
+/* ---------- Movimiento ---------- */
+.js .vitrina ul.products li.product, .js .banner__cats li, .js .confianza li {
+	opacity: 0; transform: translateY(20px);
+	transition: opacity 520ms var(--ease-out) var(--retraso, 0ms), transform 520ms var(--ease-out) var(--retraso, 0ms);
+}
+.js .vitrina ul.products li.product.visto, .js .banner__cats li.visto, .js .confianza li.visto { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+	.js .vitrina ul.products li.product, .js .banner__cats li, .js .confianza li { opacity: 1; transform: none; transition: none; }
+	button, .button, .boton, .banner__cats a { transition: none; }
+}
+
+/* ---------- Páginas de la tienda ---------- */
+.woocommerce-products-header__title, .page-title, .entry-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 0.75rem; }
+.woocommerce-result-count { color: var(--tinta-suave); }
+.woocommerce-ordering select, select.orderby { padding: 0.6rem 0.8rem; border: 1px solid #BFCBF2; border-radius: 0; background: #fff; color: var(--tinta); }
+.storefront-sorting { margin-bottom: 1.5rem; }
+.woocommerce-products-header, .woocommerce-products-header__title, .page-title { text-align: left; }
