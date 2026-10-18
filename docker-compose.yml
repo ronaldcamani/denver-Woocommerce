@@ -1,0 +1,54 @@
+# Entorno local de DENVER LIBRERIA (solo desarrollo). Funciona con Docker o Podman.
+name: denver-wp
+services:
+  db:
+    image: mariadb:lts
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8890:80"
+    environment: &wp_env
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: "1"
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WPLANG', 'es_PE');
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', false);
+    volumes: &wp_volumes
+      - wp:/var/www/html
+      - ./themes/denver-storefront:/var/www/html/wp-content/themes/denver-storefront
+      - ./plugins/denver-configuracion:/var/www/html/wp-content/plugins/denver-configuracion
+
+  cli:
+    image: wordpress:cli
+    depends_on:
+      - wordpress
+    user: "33:33"
+    environment:
+      <<: *wp_env
+      HOME: /tmp
+    volumes: *wp_volumes
+    entrypoint: ["wp"]
+    profiles: ["cli"]
+
+volumes:
+  db:
+  wp:

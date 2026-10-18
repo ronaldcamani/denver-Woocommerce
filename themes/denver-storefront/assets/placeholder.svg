@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="DENVER LIBRERIA">
+  <rect width="600" height="600" fill="#0A1B5C"/>
+  <circle cx="300" cy="250" r="110" fill="#FFE11F"/>
+  <text x="300" y="292" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="130" fill="#0A1B5C">D</text>
+  <text x="300" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="48" letter-spacing="6" fill="#fff">DENVER</text>
+  <text x="300" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" letter-spacing="10" fill="#1F6BFF">LIBRERIA</text>
+</svg>
