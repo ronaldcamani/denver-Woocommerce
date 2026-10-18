@@ -132,7 +132,6 @@ function denver_cabecera() {
 			<?php foreach ( $cats as $c ) : ?>
 				<li><a href="<?php echo esc_url( get_term_link( $c ) ); ?>"><?php echo esc_html( $c->name ); ?></a></li>
 			<?php endforeach; ?>
-			<li><a href="<?php echo esc_url( home_url( '/#servicios' ) ); ?>">Copias e impresiones</a></li>
 			<li><a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Tienda</a></li>
 		</ul>
 	</nav>
@@ -144,7 +143,7 @@ function denver_pie() {
 	<div class="pie">
 		<div class="pie__col">
 			<p class="pie__marca">Denver Librería</p>
-			<p>Útiles escolares y de oficina, copias, impresiones, plotter y anillados.</p>
+			<p>Útiles escolares y de oficina, juguetes y regalos.</p>
 			<p>Mz. 32 Lote 04, P.J. El Porvenir, Miraflores, Arequipa.</p>
 		</div>
 		<div class="pie__col">

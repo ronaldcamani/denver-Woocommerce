@@ -182,27 +182,8 @@ ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
 }
 
 .vitrina { max-width: 1240px; margin: 0 auto; padding: clamp(3rem, 7vw, 6rem) var(--margen) clamp(2rem, 4vw, 4rem); box-sizing: border-box; }
-.vitrina h2, .servicios h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0 0 1.5rem; }
+.vitrina h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0 0 1.5rem; }
 .vitrina__mas { text-align: center; margin: 0; }
-
-.servicios { background: var(--papel); padding: clamp(3rem, 7vw, 6rem) var(--margen); }
-.servicios__caja { max-width: 1240px; margin: 0 auto; display: grid; gap: 2rem; }
-.servicios__lista ul { list-style: none; margin: 0; padding: 0; }
-.servicios__lista a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 0.75rem; margin: 0 -0.75rem; color: var(--tinta); text-decoration: none; transition: background-color 160ms var(--ease-out); }
-.servicios__lista strong { display: block; font-size: 1.25rem; }
-.servicios__lista small { display: block; font-size: 1rem; color: var(--tinta-suave); }
-.servicios__precio { font-family: var(--display); font-weight: 800; font-size: 1.5rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.servicios__nota { margin: 1rem 0 0; color: var(--tinta-suave); font-size: 1rem; }
-@media (hover: hover) and (pointer: fine) { .servicios__lista a:hover { background: var(--papel-2); } }
-.servicios__lado img { display: block; width: 100%; height: auto; background: #fff; }
-.calculadora { background: var(--amarillo); color: var(--marino); padding: 1.5rem; }
-.calculadora h3 { margin: 0 0 0.75rem; font-size: 1.6rem; }
-.calculadora label { display: block; font-weight: 700; margin-bottom: 0.25rem; }
-.calculadora input { width: 100%; box-sizing: border-box; padding: 0.5rem 0.8rem; background: #fff; color: var(--marino); border: 0; border-radius: 0; font-family: var(--display); font-weight: 800; font-size: 2rem; }
-.calculadora__total { margin: 0.75rem 0 0; font-size: 1.125rem; }
-.calculadora__total strong { display: block; font-family: var(--display); font-weight: 800; font-size: 2.75rem; line-height: 1; font-variant-numeric: tabular-nums; }
-.calculadora__nota { margin: 0.5rem 0 0; font-size: 1rem; }
-@media (min-width: 900px) { .servicios__caja { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; } }
 
 .confianza { max-width: 1240px; margin: 0 auto; padding: clamp(3rem, 6vw, 5rem) var(--margen); box-sizing: border-box; }
 .confianza ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.75rem; }
