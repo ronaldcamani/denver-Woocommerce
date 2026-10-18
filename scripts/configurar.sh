@@ -62,4 +62,28 @@ fi
 echo "→ Envíos (solo Perú)"
 wp eval "$(cat scripts/envios.php)"
 
+echo "→ Portada, páginas y menú"
+wp post delete $(wp post list --post_type=post,page --name=hello-world,sample-page --format=ids) --force >/dev/null 2>&1 || true
+wp comment delete $(wp comment list --format=ids) --force >/dev/null 2>&1 || true
+INICIO=$(wp post list --post_type=page --name=inicio --format=ids)
+if [ -z "$INICIO" ]; then
+  INICIO=$(wp post create --post_type=page --post_status=publish --post_title="Inicio" --post_name=inicio --porcelain)
+fi
+wp option update show_on_front page
+wp option update page_on_front "$INICIO"
+for par in shop:tienda cart:carrito checkout:finalizar-compra myaccount:mi-cuenta; do
+  wp post update "$(wp option get woocommerce_${par%%:*}_page_id)" --post_name="${par##*:}" >/dev/null
+done
+wp option update permalink_structure "/%postname%/"
+wp rewrite flush >/dev/null
+wp menu delete "Principal" >/dev/null 2>&1 || true
+if true; then
+  TIENDA=$(wp option get woocommerce_shop_page_id); CUENTA=$(wp option get woocommerce_myaccount_page_id)
+  wp menu create "Principal" >/dev/null
+  wp menu item add-post "Principal" "$INICIO" --title="Inicio" >/dev/null
+  wp menu item add-post "Principal" "$TIENDA" --title="Tienda" >/dev/null
+  wp menu item add-post "Principal" "$CUENTA" --title="Mi cuenta" >/dev/null
+fi
+wp menu location assign "Principal" primary >/dev/null
+
 echo "✔ Tienda configurada. Abre http://localhost:8890 (usuario admin, clave en .env.local)"
