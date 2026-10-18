@@ -9,7 +9,7 @@ require_once WC_ABSPATH . 'includes/import/class-wc-product-csv-importer.php';
 // Columna del CSV (excel_a_csv.py) => campo de WooCommerce.
 $mapeo = array(
 	'SKU' => 'sku', 'Type' => 'type', 'Name' => 'name', 'Published' => 'published',
-	'Visibility in catalog' => 'catalog_visibility', 'Description' => 'description',
+	'Visibility in catalog' => 'catalog_visibility', 'Short description' => 'short_description', 'Description' => 'description',
 	'Tax status' => 'tax_status', 'Tax class' => 'tax_class', 'In stock?' => 'stock_status',
 	'Stock' => 'stock_quantity', 'Regular price' => 'regular_price', 'Categories' => 'category_ids',
 	'Images' => 'images',

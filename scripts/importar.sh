@@ -11,4 +11,8 @@ docker compose cp "$CSV" wordpress:/var/www/html/productos_woocommerce.csv 2>/de
 docker compose exec -T wordpress chmod 644 /var/www/html/productos_woocommerce.csv
 docker compose --profile cli run --rm -T cli eval "$(cat scripts/importar.php)" 2>&1 | grep -v -e nodocker -e '^\s*$' -e 'Container' -e 'compose provider'
 docker compose --profile cli run --rm -T cli wc product list --user=1 --per_page=1 --fields=id >/dev/null 2>&1 || true
+# La importación deja miles de tareas pendientes de WooCommerce (búsquedas, analítica). Se procesan ahora
+# para que la tienda no quede lenta y los informes se actualicen.
+echo "Procesando tareas pendientes de WooCommerce..."
+docker compose --profile cli run --rm -T cli action-scheduler run --batch-size=200 --batches=300 2>&1 | tail -1
 echo "✔ Importación terminada. Revisa http://localhost:8890/wp-admin/edit.php?post_type=product"

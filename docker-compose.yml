@@ -49,6 +49,7 @@ services:
       - wp:/var/www/html
       - ./themes/denver-storefront:/var/www/html/wp-content/themes/denver-storefront
       - ./plugins/denver-configuracion:/var/www/html/wp-content/plugins/denver-configuracion
+      - ./.herramientas/wc-claude/plugins/woocommerce-for-claude:/var/www/html/wp-content/plugins/woocommerce-claude
 
   mailpit:
     image: axllent/mailpit

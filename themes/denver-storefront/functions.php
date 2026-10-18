@@ -92,7 +92,7 @@ add_filter( 'woocommerce_add_to_cart_fragments', function ( $f ) {
 
 /** Categorías con productos publicados (sin "Uncategorized"). */
 function denver_categorias() {
-	$t = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true, 'exclude' => array( (int) get_option( 'default_product_cat' ) ) ) );
+	$t = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true, 'parent' => 0, 'exclude' => array( (int) get_option( 'default_product_cat' ) ) ) );
 	return is_wp_error( $t ) ? array() : $t;
 }
 

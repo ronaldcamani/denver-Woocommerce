@@ -54,6 +54,12 @@ wp option update woocommerce_price_decimal_sep "."
 wp option update woocommerce_price_thousand_sep ","
 wp option update woocommerce_price_num_decimals 2
 
+echo "→ Unidades y dirección de la tienda"
+wp option update woocommerce_weight_unit kg
+wp option update woocommerce_dimension_unit cm
+wp option update woocommerce_store_address "Mz. 32 Lote 04, P.J. El Porvenir"
+wp option update woocommerce_store_city "Miraflores, Arequipa"
+
 echo "→ IGV 18 % incluido en los precios"
 wp option update woocommerce_calc_taxes yes
 wp option update woocommerce_prices_include_tax yes
