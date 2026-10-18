@@ -58,7 +58,7 @@ body.home.page:not(.page-template-template-homepage) .site-header, .home.blog .s
 .logo__sub { font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--electrico); padding-top: 0.15rem; }
 .categorias { position: relative; }
 .categorias__boton { display: flex; align-items: center; gap: 0.5rem; background: var(--marino); color: #fff; padding: 0.8rem 1.1rem; font-size: 1.0625rem; }
-.categorias__lista { position: absolute; z-index: 50; top: calc(100% + 0.5rem); left: 0; min-width: 16rem; margin: 0; padding: 0.5rem 0; list-style: none; background: #fff; box-shadow: 0 8px 24px rgba(10, 27, 92, 0.18); }
+.categorias__lista { position: absolute; z-index: 50; top: calc(100% + 0.5rem); left: 0; min-width: 16rem; margin: 0; padding: 0.5rem 0; list-style: none; background: #fff; box-shadow: 0 8px 24px rgba(10, 27, 92, 0.18); /* taste-skill-ignore: menú desplegable */ }
 .categorias__lista[hidden] { display: none; }
 .categorias__lista a { display: flex; justify-content: space-between; gap: 1.5rem; padding: 0.7rem 1.25rem; color: var(--tinta); text-decoration: none; font-weight: 600; }
 .categorias__lista small { color: var(--tinta-suave); font-weight: 400; }

@@ -4,3 +4,4 @@ node_modules/
 .~lock.*
 /salida/
 __pycache__/
+.taste-skill/
