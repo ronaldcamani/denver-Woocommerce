@@ -29,6 +29,8 @@ add_action( 'wp_footer', function () {
 			touch-action: manipulation;
 		}
 		.denver-whatsapp:active { transform: scale(0.94); }
+		/* Sobre la barra inferior de Storefront en celular. */
+		@media (max-width: 767px) { .denver-whatsapp { bottom: calc(80px + env(safe-area-inset-bottom)); } }
 		@media (prefers-reduced-motion: reduce) { .denver-whatsapp { transition: none; } }
 	</style>
 	<?php

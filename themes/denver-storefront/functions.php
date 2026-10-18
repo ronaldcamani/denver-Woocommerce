@@ -11,7 +11,7 @@ add_action( 'wp_enqueue_scripts', function () {
 		'denver-storefront',
 		get_stylesheet_uri(),
 		array( 'storefront-style' ),
-		wp_get_theme()->get( 'Version' )
+		filemtime( get_stylesheet_directory() . '/style.css' )
 	);
 } );
 
