@@ -156,6 +156,24 @@ function denver_pie() {
 			</ul>
 		</div>
 		<div class="pie__col">
+			<p class="pie__titulo">Ayuda</p>
+			<ul>
+				<?php
+				foreach ( array(
+					'terminos-y-condiciones' => 'Términos y condiciones',
+					'politica-de-privacidad' => 'Política de privacidad',
+					'envios-cambios-y-devoluciones' => 'Envíos, cambios y devoluciones',
+					'libro-de-reclamaciones' => 'Libro de Reclamaciones',
+				) as $slug => $titulo ) {
+					$pg = get_page_by_path( $slug );
+					if ( $pg ) {
+						echo '<li><a href="' . esc_url( get_permalink( $pg ) ) . '">' . esc_html( $titulo ) . '</a></li>';
+					}
+				}
+				?>
+			</ul>
+		</div>
+		<div class="pie__col">
 			<p class="pie__titulo">Escríbenos</p>
 			<p><a class="pie__wa" href="<?php echo esc_url( denver_wa( 'Hola DENVER LIBRERIA, quisiera hacer una consulta.' ) ); ?>" target="_blank" rel="noopener">WhatsApp 902 022 295</a></p>
 			<p>libreriadenver@gmail.com</p>

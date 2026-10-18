@@ -77,7 +77,9 @@ echo "→ Pagos"
 wp option update woocommerce_denver_yape_settings '{"enabled":"yes","title":"Yape","description":"Paga con Yape y escribe el código de aprobación.","numero":"902022295","titular":"DENVER S.A.C."}' --format=json
 
 echo "→ Portada, páginas y menú"
-wp post delete $(wp post list --post_type=post,page --name=hello-world,sample-page --format=ids) --force >/dev/null 2>&1 || true
+for borrar in hello-world sample-page privacy-policy refund_returns; do
+  wp post delete $(wp post list --post_type=post,page --name="$borrar" --post_status=any --format=ids) --force >/dev/null 2>&1 || true
+done
 wp comment delete $(wp comment list --format=ids) --force >/dev/null 2>&1 || true
 INICIO=$(wp post list --post_type=page --name=inicio --format=ids)
 if [ -z "$INICIO" ]; then
@@ -102,5 +104,39 @@ if true; then
   wp menu item add-post "Principal" "$CUENTA" --title="Mi cuenta" >/dev/null
 fi
 wp menu location assign "Principal" primary >/dev/null
+
+echo "→ Correos (WP Mail SMTP + diseño de los correos de WooCommerce)"
+wp plugin is-installed wp-mail-smtp || wp plugin install wp-mail-smtp
+wp plugin activate wp-mail-smtp >/dev/null 2>&1 || true
+wp option update woocommerce_email_from_name "DENVER LIBRERIA"
+wp option update woocommerce_email_from_address "libreriadenver@gmail.com"
+wp option update woocommerce_email_footer_text "DENVER S.A.C. · RUC 20610817433 · Mz. 32 Lote 04, P.J. El Porvenir, Miraflores, Arequipa · WhatsApp 902 022 295"
+wp option update woocommerce_email_base_color "#1F6BFF"
+wp option update woocommerce_email_background_color "#F4F6FC"
+wp option update woocommerce_email_body_background_color "#FFFFFF"
+wp option update woocommerce_email_text_color "#0A1B5C"
+# Aviso de nuevo pedido a la tienda.
+wp option patch update woocommerce_new_order_settings recipient "libreriadenver@gmail.com" >/dev/null 2>&1 \
+  || wp option update woocommerce_new_order_settings '{"enabled":"yes","recipient":"libreriadenver@gmail.com"}' --format=json
+
+echo "→ Páginas legales y Libro de Reclamaciones"
+# Se crean si no existen. Para volver a cargar el texto desde contenido/: FORZAR_CONTENIDO=1 npm run tienda:configurar
+pagina() { # slug título archivo
+  local id; id=$(wp post list --post_type=page --name="$1" --post_status=any --format=ids)
+  if [ -z "$id" ]; then
+    id=$(wp post create --post_type=page --post_status=publish --post_title="$2" --post_name="$1" --porcelain)
+    FORZAR_CONTENIDO=1
+  fi
+  if [ "${FORZAR_CONTENIDO:-0}" = "1" ]; then
+    wp post update "$id" --post_content="$(cat "contenido/$3")" >/dev/null
+  fi
+  echo "$id"
+}
+P_TERMINOS=$(pagina terminos-y-condiciones "Términos y condiciones" terminos-y-condiciones.html)
+P_PRIVAC=$(pagina politica-de-privacidad "Política de privacidad" politica-de-privacidad.html)
+P_ENVIOS=$(pagina envios-cambios-y-devoluciones "Envíos, cambios y devoluciones" envios-cambios-y-devoluciones.html)
+P_LIBRO=$(pagina libro-de-reclamaciones "Libro de Reclamaciones" libro-de-reclamaciones.html)
+wp option update woocommerce_terms_page_id "$P_TERMINOS"
+wp option update wp_page_for_privacy_policy "$P_PRIVAC"
 
 echo "✔ Tienda configurada. Abre http://localhost:8890 (usuario admin, clave en .env.local)"

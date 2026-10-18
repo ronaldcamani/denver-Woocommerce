@@ -149,7 +149,7 @@ ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
 .pie__titulo { font-weight: 700; color: #fff; }
 .pie__wa { font-weight: 700; color: var(--amarillo) !important; }
 .pie__legal { color: #BFCBF2; font-size: 1rem; }
-@media (min-width: 768px) { .pie { grid-template-columns: 2fr 1fr 1.5fr; } .pie__legal { grid-column: 1 / -1; } }
+@media (min-width: 768px) { .pie { grid-template-columns: 2fr 1fr 1.4fr 1.4fr; } .pie__legal { grid-column: 1 / -1; } }
 
 /* ---------- Portada ---------- */
 .home .site-content > .col-full { max-width: none; padding: 0; margin: 0; }
@@ -227,3 +227,23 @@ ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
 .woocommerce-ordering select, select.orderby { padding: 0.6rem 0.8rem; border: 1px solid #BFCBF2; border-radius: 0; background: #fff; color: var(--tinta); }
 .storefront-sorting { margin-bottom: 1.5rem; }
 .woocommerce-products-header, .woocommerce-products-header__title, .page-title { text-align: left; }
+
+/* ---------- Libro de Reclamaciones ---------- */
+.reclamo { max-width: 760px; }
+.reclamo__aviso { color: var(--tinta-suave); }
+.reclamo__proveedor { background: var(--papel); padding: 1rem 1.25rem; margin: 1rem 0 1.5rem; }
+.reclamo fieldset { border: 0; margin: 0 0 2rem; padding: 0; }
+.reclamo legend { font-family: var(--display); font-weight: 800; font-size: 1.6rem; text-transform: uppercase; padding: 0; margin-bottom: 0.75rem; color: var(--tinta); }
+.reclamo p { margin: 0 0 1rem; }
+.reclamo label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.reclamo input[type="text"], .reclamo input[type="tel"], .reclamo input[type="email"], .reclamo select, .reclamo textarea { width: 100%; box-sizing: border-box; padding: 0.7rem 0.8rem; border: 1px solid #9FB0E0; border-radius: 0; background: #fff; color: var(--tinta); font-size: 1rem; }
+.reclamo__fila { display: grid; gap: 0 1rem; }
+.reclamo__radios label, .reclamo__check label { display: block; font-weight: 400; }
+.reclamo__radios > span { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.reclamo__radios small { color: var(--tinta-suave); }
+.reclamo__trampa { position: absolute; left: -9999px; }
+.reclamo__nota { color: var(--tinta-suave); font-size: 1rem; }
+.reclamo__errores { background: #FDECEA; color: #7A130D; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+.reclamo__errores ul { margin: 0; padding-left: 1.25rem; }
+.reclamo__ok { background: var(--papel); padding: 1.5rem; max-width: 640px; }
+@media (min-width: 640px) { .reclamo__fila { grid-template-columns: 1fr 1fr; } }
