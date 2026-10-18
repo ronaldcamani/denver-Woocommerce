@@ -1,0 +1,24 @@
+/*
+Theme Name: DENVER Storefront
+Template: storefront
+Description: Tema hijo de Storefront para DENVER LIBRERIA.
+Version: 0.1.0
+Text Domain: denver-storefront
+*/
+
+:root {
+	--denver-marino: #0A1B5C;
+	--denver-electrico: #1F6BFF;
+	--denver-amarillo: #FFE11F;
+}
+
+.site-header { background-color: var(--denver-marino); }
+.site-header a:not(.button), .site-header .site-description { color: #fff; }
+a { color: var(--denver-electrico); }
+button, .button, input[type="submit"], .added_to_cart,
+.woocommerce #respond input#submit.alt, .woocommerce a.button.alt,
+.woocommerce button.button.alt, .woocommerce input.button.alt {
+	background-color: var(--denver-electrico);
+	color: #fff;
+}
+.woocommerce span.onsale { background-color: var(--denver-amarillo); color: var(--denver-marino); }

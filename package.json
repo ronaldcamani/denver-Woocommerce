@@ -1,0 +1,13 @@
+{
+  "name": "denver-woocommerce",
+  "private": true,
+  "description": "Tienda en línea DENVER LIBRERIA (WordPress + WooCommerce)",
+  "scripts": {
+    "tienda:start": "bash scripts/tienda.sh start",
+    "tienda:stop": "bash scripts/tienda.sh stop",
+    "tienda:configurar": "bash scripts/configurar.sh",
+    "tienda:csv": "python3 scripts/excel_a_csv.py",
+    "tienda:importar": "bash scripts/importar.sh",
+    "tienda:reset": "bash scripts/tienda.sh reset"
+  }
+}
