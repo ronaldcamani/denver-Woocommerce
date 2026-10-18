@@ -31,6 +31,17 @@ echo "→ Plugin y tema"
 wp plugin activate woocommerce denver-configuracion
 wp theme activate denver-storefront
 
+echo "→ Traducciones al español de Perú"
+# WooCommerce y Storefront no publican es_PE: se instala es_ES y se copia con nombre es_PE.
+wp language plugin install woocommerce es_ES >/dev/null 2>&1 || true
+wp language theme install storefront es_ES >/dev/null 2>&1 || true
+docker compose exec -T wordpress bash -c '
+  for d in plugins themes; do
+    cd /var/www/html/wp-content/languages/$d 2>/dev/null || continue
+    for f in *-es_ES*; do cp -f "$f" "${f/es_ES/es_PE}"; done
+  done
+  chown -R www-data:www-data /var/www/html/wp-content/languages' 2>/dev/null
+
 echo "→ País, moneda y formato"
 wp option update woocommerce_default_country "PE:ARE"
 wp option update woocommerce_allowed_countries specific
@@ -62,6 +73,9 @@ fi
 echo "→ Envíos (solo Perú)"
 wp eval "$(cat scripts/envios.php)"
 
+echo "→ Pagos"
+wp option update woocommerce_denver_yape_settings '{"enabled":"yes","title":"Yape","description":"Paga con Yape y escribe el código de aprobación.","numero":"902022295","titular":"DENVER S.A.C."}' --format=json
+
 echo "→ Portada, páginas y menú"
 wp post delete $(wp post list --post_type=post,page --name=hello-world,sample-page --format=ids) --force >/dev/null 2>&1 || true
 wp comment delete $(wp comment list --format=ids) --force >/dev/null 2>&1 || true
@@ -73,6 +87,9 @@ wp option update show_on_front page
 wp option update page_on_front "$INICIO"
 for par in shop:tienda cart:carrito checkout:finalizar-compra myaccount:mi-cuenta; do
   wp post update "$(wp option get woocommerce_${par%%:*}_page_id)" --post_name="${par##*:}" >/dev/null
+done
+for par in shop:Tienda cart:Carrito checkout:"Finalizar compra" myaccount:"Mi cuenta"; do
+  wp post update "$(wp option get woocommerce_${par%%:*}_page_id)" --post_title="${par##*:}" >/dev/null
 done
 wp option update permalink_structure "/%postname%/"
 wp rewrite flush >/dev/null

@@ -159,3 +159,16 @@ ul.products li.product .woocommerce-loop-product__title { font-size: 0.95rem; fo
 /* ---- Pie ---- */
 .site-footer { background: var(--denver-marino); color: rgba(255, 255, 255, 0.85); }
 .site-footer a:not(.button), .site-footer h1, .site-footer h2, .site-footer h3 { color: #fff; }
+
+/* ---- Checkout de bloques ---- */
+.wc-block-components-button:not(.is-link) {
+	background-color: var(--denver-electrico);
+	color: #fff;
+	border-radius: 10px;
+	font-weight: 700;
+	transition: transform 140ms var(--ease-out), background-color 140ms var(--ease-out);
+}
+.wc-block-components-button:not(.is-link):active { transform: scale(0.98); }
+@media (hover: hover) and (pointer: fine) {
+	.wc-block-components-button:not(.is-link):hover { background-color: var(--denver-marino); color: #fff; }
+}
