@@ -33,7 +33,7 @@
 			el( 'label', { className: 'denver-yape__campo' },
 				'Código de aprobación ',
 				el( 'input', {
-					type: 'text', value: codigo, maxLength: 10, autoComplete: 'off',
+					type: 'text', name: 'denver_yape_codigo', value: codigo, maxLength: 10, autoComplete: 'off', autoCapitalize: 'characters', spellCheck: false,
 					onChange: function ( e ) { setCodigo( e.target.value ); },
 					style: { display: 'block', width: '100%', fontSize: '16px', padding: '0.6rem', marginTop: '0.25rem' }
 				} )
