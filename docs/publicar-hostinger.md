@@ -74,6 +74,7 @@ El plan Unlimited hace copias **diarias**. Antes de cada cambio grande: hPanel �
 - [ ] Llega el correo al cliente y a libreriadenver@gmail.com.
 - [ ] Revisa en el celular: portada, categorías, carrito y finalizar compra.
 - [ ] Páginas legales revisadas por tu abogado o contador (Términos, Privacidad, Envíos y devoluciones, Libro de Reclamaciones).
+- [ ] **Publicar la tienda:** WooCommerce → Ajustes → Sitio → Visibilidad → *Tienda en vivo* (mientras diga "Próximamente", los clientes ven "tienda en obras").
 - [ ] Ajustes → Lectura: *Disuadir a los motores de búsqueda* **desmarcado**.
 - [ ] Define el costo del delivery en WooCommerce → Ajustes → Envío → Arequipa.
 - [ ] Comprobantes: emítelos desde tu sistema SUNAT SOL usando el DNI/RUC y la razón social que aparecen en cada pedido.
