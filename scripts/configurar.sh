@@ -82,6 +82,11 @@ wp eval "$(cat scripts/envios.php)"
 echo "→ Pagos"
 wp option update woocommerce_denver_yape_settings '{"enabled":"yes","title":"Yape","description":"Paga con Yape y escribe el código de aprobación.","numero":"902022295","titular":"DENVER S.A.C."}' --format=json
 
+# Pago al recoger (solo con recojo en tienda) y Mercado Pago (las claves las pone la dueña en el panel)
+wp option update woocommerce_cod_settings '{"enabled":"yes","title":"Pago al recoger en tienda","description":"Paga en efectivo cuando recojas tu pedido en la tienda.","instructions":"Te avisaremos por WhatsApp cuando tu pedido esté listo para recoger. Paga en efectivo al retirarlo.","enable_for_methods":["local_pickup"],"enable_for_virtual":"no"}' --format=json
+wp plugin is-installed woocommerce-mercadopago || wp plugin install woocommerce-mercadopago
+wp plugin activate woocommerce-mercadopago >/dev/null 2>&1 || true
+
 echo "→ Portada, páginas y menú"
 for borrar in hello-world sample-page privacy-policy refund_returns; do
   wp post delete $(wp post list --post_type=post,page --name="$borrar" --post_status=any --format=ids) --force >/dev/null 2>&1 || true
