@@ -12,7 +12,7 @@ $zona->save();
 
 $delivery = $zona->add_shipping_method( 'flat_rate' );
 update_option( 'woocommerce_flat_rate_' . $delivery . '_settings', array(
-	'title'      => 'Delivery en Arequipa (12 a 24 horas)',
+	'title'      => 'Delivery por inDrive, 12 a 24 horas (el costo de la carrera se coordina por WhatsApp)',
 	'tax_status' => 'none',
 	'cost'       => '0',
 ) );

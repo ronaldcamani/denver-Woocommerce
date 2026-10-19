@@ -228,3 +228,4 @@ ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
 .reclamo__errores ul { margin: 0; padding-left: 1.25rem; }
 .reclamo__ok { background: var(--papel); padding: 1.5rem; max-width: 640px; }
 @media (min-width: 640px) { .reclamo__fila { grid-template-columns: 1fr 1fr; } }
+

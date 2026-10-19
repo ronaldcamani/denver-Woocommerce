@@ -52,6 +52,9 @@ else
   docker compose exec -T wordpress chown -R www-data:www-data /var/www/html/wp-content/languages 2>/dev/null
 fi
 
+# En local la tienda se ve abierta; en el hosting queda "próximamente" hasta que la dueña la publique (guía, paso 12).
+[ "$HOSTING" = "1" ] || wp option update woocommerce_coming_soon no
+
 echo "→ País, moneda y formato"
 wp option update woocommerce_default_country "PE:ARE"
 wp option update woocommerce_allowed_countries specific

@@ -18,7 +18,7 @@ $url_navidad = $navidad ? get_term_link( $navidad ) : wc_get_page_permalink( 'sh
 		<section class="banner" aria-labelledby="t-banner">
 			<div class="banner__texto">
 				<h1 id="t-banner">Navidad en Denver</h1>
-				<p>Regalos, juguetes y adornos. Delivery en Arequipa en 12 a 24 horas, o recojo gratis en tienda.</p>
+				<p>Regalos, juguetes y adornos. Delivery por inDrive en Arequipa (12 a 24 horas), o recojo gratis en tienda.</p>
 				<a class="boton boton--amarillo" href="<?php echo esc_url( $url_navidad ); ?>">Ver productos de Navidad</a>
 			</div>
 			<?php if ( $cats ) : ?>
@@ -41,7 +41,7 @@ $url_navidad = $navidad ? get_term_link( $navidad ) : wc_get_page_permalink( 'sh
 
 		<section class="confianza" aria-label="Compra segura">
 			<ul>
-				<li><strong>Delivery en Arequipa</strong><span>Llega en 12 a 24 horas, o recoge gratis en tienda.</span></li>
+				<li><strong>Delivery en Arequipa</strong><span>Por inDrive, en 12 a 24 horas. El costo se coordina por WhatsApp. Recojo en tienda gratis.</span></li>
 				<li><strong>Paga con Yape</strong><span>Escribe tu código de aprobación al terminar el pedido.</span></li>
 				<li><strong>Boleta o factura</strong><span>Eliges al comprar. Para factura, tu RUC y razón social.</span></li>
 			</ul>
