@@ -99,8 +99,9 @@ function denver_categorias() {
 function denver_cabecera() {
 	$cats = denver_categorias();
 	?>
+	<a class="screen-reader-text skip-link" href="#main">Saltar al contenido</a>
 	<div class="cabecera">
-		<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="DENVER LIBRERIA, inicio">
+		<a class="logo" translate="no" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="DENVER LIBRERIA, inicio">
 			<span class="logo__nombre">Denver</span><span class="logo__sub">Librería</span>
 		</a>
 
@@ -118,7 +119,7 @@ function denver_cabecera() {
 
 		<form class="buscador" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<label class="screen-reader-text" for="buscar">Buscar productos</label>
-			<input id="buscar" type="search" name="s" placeholder="Busca en nuestro catálogo" value="<?php echo esc_attr( get_search_query() ); ?>">
+			<input id="buscar" type="search" name="s" placeholder="Busca en nuestro catálogo&hellip;" autocomplete="off" enterkeyhint="search" value="<?php echo esc_attr( get_search_query() ); ?>">
 			<input type="hidden" name="post_type" value="product">
 			<button type="submit" aria-label="Buscar"><?php echo denver_icono( 'buscar' ); // phpcs:ignore ?></button>
 		</form>
@@ -142,7 +143,7 @@ function denver_pie() {
 	?>
 	<div class="pie">
 		<div class="pie__col">
-			<p class="pie__marca">Denver Librería</p>
+			<p class="pie__marca" translate="no">Denver Librería</p>
 			<p>Útiles escolares y de oficina, juguetes y regalos.</p>
 			<p>Mz. 32 Lote 04, P.J. El Porvenir, Miraflores, Arequipa.</p>
 		</div>

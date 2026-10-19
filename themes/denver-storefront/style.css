@@ -160,7 +160,7 @@ ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
 	background: var(--marino); color: #fff; padding: clamp(2.5rem, 6vw, 5rem) var(--margen);
 	display: grid; gap: 2rem; align-items: center;
 }
-.banner > * { max-width: 1240px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+.banner > * { max-width: calc(1240px - 2 * var(--margen)); width: 100%; margin: 0 auto; box-sizing: border-box; }
 .banner h1 { margin: 0; color: #fff; font-size: clamp(3.2rem, 9vw, 7rem); line-height: 0.9; }
 .banner p { margin: 1rem 0 1.75rem; max-width: 36ch; font-size: var(--paso-lead); color: #E3EAFB; line-height: 1.35; }
 .boton--amarillo { background: var(--amarillo); color: var(--marino); font-size: 1.125rem; padding: 1rem 1.75rem; }
@@ -229,3 +229,10 @@ ul.products li.product .button { margin: auto 0.9rem 0; text-align: center; }
 .reclamo__ok { background: var(--papel); padding: 1.5rem; max-width: 640px; }
 @media (min-width: 640px) { .reclamo__fila { grid-template-columns: 1fr 1fr; } }
 
+
+/* Detalles de interfaz: títulos equilibrados, cifras alineadas y salto al contenido */
+h1, h2, h3, .banner__texto p { text-wrap: balance; }
+.price, .woocommerce-Price-amount, .wc-block-components-formatted-money-amount, .wc-block-components-product-price, .cuenta { font-variant-numeric: tabular-nums; }
+.skip-link:focus { position: fixed; top: 0.5rem; left: 0.5rem; z-index: 100000; padding: 0.75rem 1rem; clip: auto; width: auto; height: auto; }
+html { scroll-padding-top: 5rem; }
+.site-footer .pie a:not(.pie__wa), .site-footer .pie a:not(.pie__wa):visited { color: #fff; }
