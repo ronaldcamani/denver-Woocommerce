@@ -49,6 +49,16 @@ CATEGORIAS = OrderedDict([
 CATEGORIA_RESTO = "Otros"
 CATEGORIAS_PUBLICADAS = {"Navidad", "Juguetes", "Regalos"}
 
+# Subcategorías de Navidad. Primero se usa tu archivo Productos_Navidad.xlsx (columna SUBCATEGORÍA);
+# lo que no esté ahí se clasifica con estas palabras (sin tildes, en minúscula).
+SUBCATEGORIAS_NAVIDAD = OrderedDict([
+    ("Árboles y bases", ["arbol", "arboles", "arbolito", "arbolitos", "pino", "pinos", "base para arbol"]),
+    ("Bolas y esferas", ["bola", "bolas", "esfera", "esferas", "pelotita", "pelotitas"]),
+    ("Personajes navideños", ["papa noel", "santa claus", "grinch", "reno", "renos", "muneco", "munecos", "duende", "duendes", "patilarga", "angel", "angelito"]),
+    ("Adornos y decoración", ["adorno", "adornos", "guirnalda", "guirnaldas", "alfombra", "bota", "botas", "botita", "botitas", "nacimiento", "pesebre", "corona", "cinta", "luces", "serie de luces"]),
+])
+SUBCATEGORIA_RESTO = "Artículos navideños varios"
+
 # Palabras que van en minúscula dentro del nombre (menos la primera).
 MINUSCULAS = {"de", "del", "la", "las", "el", "los", "con", "y", "e", "o", "u", "para",
               "en", "por", "a", "al", "sin", "un", "una", "su", "sus", "lo", "que", "x"}
@@ -151,6 +161,32 @@ def categoria_de(nombre_clave):
     return CATEGORIA_RESTO
 
 
+def subcategoria_navidad(nombre_clave, mapa):
+    if nombre_clave in mapa:
+        return mapa[nombre_clave]
+    for sub, palabras in SUBCATEGORIAS_NAVIDAD.items():
+        for p in palabras:
+            if re.search(r"(?<![a-z0-9])%s(?:(?![a-z0-9])|(?=x\d))" % re.escape(p), nombre_clave):
+                return sub
+    return SUBCATEGORIA_RESTO
+
+
+def cargar_subcategorias(ruta):
+    """nombre limpio -> subcategoría, leído de Productos_Navidad.xlsx (si existe)."""
+    if not ruta or not Path(ruta).exists():
+        return {}
+    filas = leer_xlsx(ruta)
+    cab = [str(c).strip().upper() if c else "" for c in filas[0]]
+    if "SUBCATEGORÍA" not in cab or "NOMBRE" not in cab:
+        return {}
+    i_n, i_s = cab.index("NOMBRE"), cab.index("SUBCATEGORÍA")
+    mapa = {}
+    for f in filas[1:]:
+        if len(f) > max(i_n, i_s) and f[i_n] and f[i_s]:
+            mapa[clave(formato_titulo(str(f[i_n])))] = str(f[i_s]).strip()
+    return mapa
+
+
 def entero(x):
     return int(x) if float(x).is_integer() else x
 
@@ -158,7 +194,8 @@ def entero(x):
 # ------------------------------------------------------------------ PROCESO
 
 
-def procesar(filas):
+def procesar(filas, mapa_sub=None):
+    mapa_sub = mapa_sub or {}
     cabecera = [str(c).strip().upper() if c else "" for c in filas[0]]
     idx = {n: cabecera.index(n) for n in ("NOMBRE", "PRECIO", "UN. MEDIDA", "STOCK", "CAT. PRODUCTO")}
 
@@ -199,6 +236,7 @@ def procesar(filas):
         contados = [x["stock"] for x in filas_g if isinstance(x["stock"], (int, float)) and x["stock"] >= 0]
         stock = sum(contados) if contados else None  # vacío o negativo: sin control de stock
         cat = categoria_de(k)
+        sub = subcategoria_navidad(k, mapa_sub) if cat == "Navidad" else ""
         campana = cat in CATEGORIAS_PUBLICADAS
         oculto = campana and stock == 0
         productos.append({
@@ -207,6 +245,7 @@ def procesar(filas):
             "precio": max(precios),
             "stock": stock,
             "categoria": cat,
+            "subcategoria": sub,
             "publicado": campana,
             "oculto": oculto,
             "exonerado": filas_g[0]["exonerado"],
@@ -215,8 +254,18 @@ def procesar(filas):
     return productos, descartes, repetidos, conflictos_precio
 
 
+def descripcion_corta(p):
+    """Texto corto con datos reales del producto (nombre, categoría, entrega). No inventa medidas ni materiales."""
+    tipo = {"Navidad": "artículo de Navidad", "Juguetes": "juguete", "Regalos": "regalo"}.get(p["categoria"])
+    if not tipo or not p["publicado"]:
+        return ""
+    sub = " (%s)" % p["subcategoria"].lower() if p["subcategoria"] else ""
+    return ("%s: %s%s. Disponible en DENVER LIBRERIA, Arequipa, con delivery en 12 a 24 horas o recojo gratis en tienda. "
+            "Precio en soles con IGV incluido." % (p["nombre"], tipo, sub))
+
+
 def escribir_csv(productos, ruta):
-    columnas = ["SKU", "Type", "Name", "Published", "Visibility in catalog", "Description",
+    columnas = ["SKU", "Type", "Name", "Published", "Visibility in catalog", "Short description", "Description",
                 "Tax status", "Tax class", "In stock?", "Stock", "Regular price", "Categories", "Images"]
     with open(ruta, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=columnas)
@@ -230,13 +279,14 @@ def escribir_csv(productos, ruta):
                 "Name": p["nombre"],
                 "Published": 1 if p["publicado"] else -1,
                 "Visibility in catalog": "hidden" if p["oculto"] else "visible",
+                "Short description": descripcion_corta(p),
                 "Description": "" if medida.lower().startswith("u (") else "Unidad de venta: %s" % medida.capitalize(),
                 "Tax status": "taxable",
                 "Tax class": "exonerado" if p["exonerado"] else "",
                 "In stock?": 1 if sin_control or p["stock"] > 0 else 0,
                 "Stock": "" if sin_control else entero(p["stock"]),
                 "Regular price": "%.2f" % p["precio"],
-                "Categories": p["categoria"],
+                "Categories": p["categoria"] + (" > " + p["subcategoria"] if p["subcategoria"] else ""),
                 "Images": "",  # sin fotos todavía: se usa la imagen genérica con el logo
             })
 
@@ -260,6 +310,10 @@ def resumen(total_filas, productos, descartes, repetidos, conflictos):
     for cat in list(CATEGORIAS) + [CATEGORIA_RESTO]:
         estado = "publicada" if cat in CATEGORIAS_PUBLICADAS else "borrador"
         L.append("  %-24s %5d  (%s)" % (cat, por_cat.get(cat, 0), estado))
+    subs = Counter(p["subcategoria"] for p in productos if p["subcategoria"])
+    if subs:
+        L += ["", "SUBCATEGORÍAS DE NAVIDAD", "-" * 40]
+        L += ["  %-28s %5d" % (n, c) for n, c in subs.most_common()]
     if conflictos:
         L += ["", "NOMBRES REPETIDOS CON PRECIOS DISTINTOS (se usó el mayor): %d" % len(conflictos)]
         L += ["  %s: %s" % (n, ", ".join("S/ %.2f" % x for x in ps)) for n, ps in conflictos[:15]]
@@ -276,7 +330,8 @@ def main():
     destino.parent.mkdir(parents=True, exist_ok=True)
 
     filas = leer_xlsx(origen)
-    productos, descartes, repetidos, conflictos = procesar(filas)
+    mapa_sub = cargar_subcategorias(origen.with_name("Productos_Navidad.xlsx"))
+    productos, descartes, repetidos, conflictos = procesar(filas, mapa_sub)
     escribir_csv(productos, destino)
     texto = resumen(len(filas) - 1, productos, descartes, repetidos, conflictos)
     destino.with_suffix(".resumen.txt").write_text(texto + "\n", encoding="utf-8")

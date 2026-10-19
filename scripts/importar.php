@@ -1,7 +1,7 @@
 // Importa el CSV de productos con el importador oficial de WooCommerce.
 // Es idempotente: si el SKU ya existe, actualiza el producto en vez de duplicarlo.
 wp_set_current_user( 1 ); // el importador necesita permisos de administrador para crear categorías
-$archivo = '/var/www/html/productos_woocommerce.csv';
+$archivo = file_exists( '/var/www/html/productos_woocommerce.csv' ) ? '/var/www/html/productos_woocommerce.csv' : ABSPATH . 'productos_woocommerce.csv';
 if ( ! file_exists( $archivo ) ) {
 	WP_CLI::error( 'No encuentro el CSV. Ejecuta primero: npm run tienda:csv -- "ruta/al/Excel.xlsx"' );
 }
@@ -9,7 +9,7 @@ require_once WC_ABSPATH . 'includes/import/class-wc-product-csv-importer.php';
 // Columna del CSV (excel_a_csv.py) => campo de WooCommerce.
 $mapeo = array(
 	'SKU' => 'sku', 'Type' => 'type', 'Name' => 'name', 'Published' => 'published',
-	'Visibility in catalog' => 'catalog_visibility', 'Description' => 'description',
+	'Visibility in catalog' => 'catalog_visibility', 'Short description' => 'short_description', 'Description' => 'description',
 	'Tax status' => 'tax_status', 'Tax class' => 'tax_class', 'In stock?' => 'stock_status',
 	'Stock' => 'stock_quantity', 'Regular price' => 'regular_price', 'Categories' => 'category_ids',
 	'Images' => 'images',
