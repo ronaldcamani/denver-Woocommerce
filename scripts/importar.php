@@ -1,7 +1,7 @@
 // Importa el CSV de productos con el importador oficial de WooCommerce.
 // Es idempotente: si el SKU ya existe, actualiza el producto en vez de duplicarlo.
 wp_set_current_user( 1 ); // el importador necesita permisos de administrador para crear categorías
-$archivo = '/var/www/html/productos_woocommerce.csv';
+$archivo = file_exists( '/var/www/html/productos_woocommerce.csv' ) ? '/var/www/html/productos_woocommerce.csv' : ABSPATH . 'productos_woocommerce.csv';
 if ( ! file_exists( $archivo ) ) {
 	WP_CLI::error( 'No encuentro el CSV. Ejecuta primero: npm run tienda:csv -- "ruta/al/Excel.xlsx"' );
 }

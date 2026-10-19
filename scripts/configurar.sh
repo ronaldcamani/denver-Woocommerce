@@ -3,17 +3,22 @@
 # Se puede ejecutar varias veces sin duplicar nada.
 set -euo pipefail
 
+# En Hostinger (por SSH, dentro de la carpeta del sitio) se usa:  HOSTING=1 bash configurar.sh
 cd "$(dirname "$0")/.."
-if [ -z "${DOCKER_HOST:-}" ] && [ -S "/run/user/$(id -u)/podman/podman.sock" ]; then
+HOSTING="${HOSTING:-0}"
+if [ "$HOSTING" != "1" ] && [ -z "${DOCKER_HOST:-}" ] && [ -S "/run/user/$(id -u)/podman/podman.sock" ]; then
   export DOCKER_HOST="unix:///run/user/$(id -u)/podman/podman.sock"
 fi
-wp() { docker compose --profile cli run --rm -T cli "$@" 2>/dev/null; }
+if [ "$HOSTING" = "1" ]; then
+  wp() { command wp "$@" 2>/dev/null; }
+else
+  wp() { docker compose --profile cli run --rm -T cli "$@" 2>/dev/null; }
+  # Clave del administrador local: se genera una vez y queda en .env.local (no se sube a git).
+  [ -f .env.local ] || echo "ADMIN_PASS=$(head -c 12 /dev/urandom | base64 | tr -d '/+=')" > .env.local
+  . ./.env.local
+fi
 
-# Clave del administrador local: se genera una vez y queda en .env.local (no se sube a git).
-[ -f .env.local ] || echo "ADMIN_PASS=$(head -c 12 /dev/urandom | base64 | tr -d '/+=')" > .env.local
-. ./.env.local
-
-if ! wp core is-installed; then
+if [ "$HOSTING" != "1" ] && ! wp core is-installed; then
   echo "→ Instalando WordPress"
   wp core install --url=http://localhost:8890 --title="DENVER LIBRERIA" \
     --admin_user=admin --admin_password="$ADMIN_PASS" --admin_email=libreriadenver@gmail.com --skip-email
@@ -35,12 +40,17 @@ echo "→ Traducciones al español de Perú"
 # WooCommerce y Storefront no publican es_PE: se instala es_ES y se copia con nombre es_PE.
 wp language plugin install woocommerce es_ES >/dev/null 2>&1 || true
 wp language theme install storefront es_ES >/dev/null 2>&1 || true
-docker compose exec -T wordpress bash -c '
+COPIAR_ES='
   for d in plugins themes; do
-    cd /var/www/html/wp-content/languages/$d 2>/dev/null || continue
+    cd "$1/wp-content/languages/$d" 2>/dev/null || continue
     for f in *-es_ES*; do cp -f "$f" "${f/es_ES/es_PE}"; done
-  done
-  chown -R www-data:www-data /var/www/html/wp-content/languages' 2>/dev/null
+  done'
+if [ "$HOSTING" = "1" ]; then
+  bash -c "$COPIAR_ES" _ "$(command wp eval 'echo WP_CONTENT_DIR;' | sed 's#/wp-content$##')"
+else
+  docker compose exec -T wordpress bash -c "$COPIAR_ES" _ /var/www/html 2>/dev/null
+  docker compose exec -T wordpress chown -R www-data:www-data /var/www/html/wp-content/languages 2>/dev/null
+fi
 
 echo "→ País, moneda y formato"
 wp option update woocommerce_default_country "PE:ARE"
@@ -150,4 +160,4 @@ P_LIBRO=$(pagina libro-de-reclamaciones "Libro de Reclamaciones" libro-de-reclam
 wp option update woocommerce_terms_page_id "$P_TERMINOS"
 wp option update wp_page_for_privacy_policy "$P_PRIVAC"
 
-echo "✔ Tienda configurada. Abre http://localhost:8890 (usuario admin, clave en .env.local)"
+if [ "$HOSTING" = "1" ]; then echo "✔ Tienda configurada."; else echo "✔ Tienda configurada. Abre http://localhost:8890 (usuario admin, clave en .env.local)"; fi
